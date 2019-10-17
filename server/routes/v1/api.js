@@ -1,5 +1,7 @@
-var mysql_dbc = require('../../config/db_con')()
+var mysql_dbc = require('../../db/db_con')()
 var connection = mysql_dbc.init()
+var fs = require('fs')
+var spawn = require('child_process').spawn;
 import async from 'async'
 require('dotenv').config()
 
@@ -123,6 +125,88 @@ export const signIn = function(req, res) {
                         v: 'v1',
                         status: 'SUCCESS',
                         detail: 'Sign in successful!'
+                    })
+                }
+            })
+    }
+}
+
+export const compile = function(req, res) {
+    var {
+        language,
+        content
+    } = req.body
+    if (!language || !content) {
+        res.json({
+            code: 500,
+            v: 'v1',
+            status: 'ERR',
+            detail: 'INVALID FORMAT'
+        })
+    } else {
+        async.waterfall([
+                (callback) => {
+                    if(language == 'C'){
+                        let file = 'code/code.c'
+                        fs.writeFile(file, content, 'utf8', function(err){
+                            console.log('Make .c finish')
+                        })
+                        var compile = spawn('gcc', [file])
+                        compile.stdout.on('data', function(data){
+                            console.log('stdout : ' + data)
+                        })
+                        compile.stderr.on('data', function(data){
+                            console.log(String(data))
+                        })
+                        compile.on('close', function(data){
+                            if(data == 0){
+                                var run = spawn('./a.out', [])
+                                run.stdout.on('data', function(output){
+                                    callback(null, {output: output.toString('utf8')})
+                                })
+                            }else{
+                                callback({err: '.c code'})
+                            }
+                        })
+                    }else if(language == 'cpp'){
+                        let file = 'code/code.cpp'
+                        fs.writeFile(file, content, 'utf8', function(err){
+                            console.log('Make .cpp finish')
+                        })
+                        var compile = spawn('g++', [file])
+                        compile.stdout.on('data', function(data){
+                            console.log('stdout : ' + data)
+                        })
+                        compile.stderr.on('data', function(data){
+                            console.log(String(data))
+                        })
+                        compile.on('close', function(data){
+                            if(data == 0){
+                                var run = spawn('./a.out', [])
+                                run.stdout.on('data', function(output){
+                                    callback(null, {output: output.toString('utf8')})
+                                })
+                            }else{
+                                callback({err: '.cpp code'})
+                            }
+                        })
+                    }
+                }
+            ],
+            (err, result) => {
+                if (err) {
+                    res.json({
+                        code: 500,
+                        v: 'v1',
+                        status: 'ERR_COMPILE',
+                        detail: err
+                    })
+                } else {
+                    res.json({
+                        code: 200,
+                        v: 'v1',
+                        status: 'SUCCESS',
+                        detail: result
                     })
                 }
             })
