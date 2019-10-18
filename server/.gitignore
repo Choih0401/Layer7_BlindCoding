@@ -59,3 +59,8 @@ typings/
 
 # next.js build output
 .next
+
+#code file
+a.out
+code.c
+code.py

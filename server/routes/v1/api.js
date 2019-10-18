@@ -146,7 +146,7 @@ export const compile = function(req, res) {
     } else {
         async.waterfall([
                 (callback) => {
-                    if(language == 'C'){
+                    if(language == 'c'){
                         let file = 'code/code.c'
                         fs.writeFile(file, content, 'utf8', function(err){
                             console.log('Make .c finish')
@@ -189,6 +189,37 @@ export const compile = function(req, res) {
                             }else{
                                 callback({err: '.cpp code'})
                             }
+                        })
+                    }else if(language == 'python2'){
+                        let file = 'code/code.py'
+                        fs.writeFile(file, content, 'utf8', function(err){
+                            console.log('Make .py finish')
+                        })
+                        var compile = spawn('python', [file])
+                        compile.stdout.on('data', function(data){
+                            callback(null, {output: data.toString('utf8')})
+                        })
+                        compile.stderr.on('data', function(data){
+                            callback({err: String(data)})
+                        })
+                    }else if(language == 'python3'){
+                        let file = 'code/code.py'
+                        fs.writeFile(file, content, 'utf8', function(err){
+                            console.log('Make .py3 finish')
+                        })
+                        var compile = spawn('python3', [file])
+                        compile.stdout.on('data', function(data){
+                            callback(null, {output: data.toString('utf8')})
+                        })
+                        compile.stderr.on('data', function(data){
+                            callback({err: String(data)})
+                        })
+                    }else{
+                        res.json({
+                            code: 500,
+                            v: 'v1',
+                            status: 'ERR',
+                            detail: 'INVALID FORMAT'
                         })
                     }
                 }
