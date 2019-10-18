@@ -9,11 +9,9 @@ export const signUp = function(req, res) {
     var {
         id,
         name,
-        password,
-        email,
-        interest
+        password
     } = req.body
-    if (!id || !name || !password || !email || !interest) {
+    if (!id || !name || !password) {
         res.json({
             code: 500,
             v: 'v1',
@@ -23,8 +21,8 @@ export const signUp = function(req, res) {
     } else {
         async.waterfall([
                 (callback) => {
-                    var sql = `SELECT count(*) as count FROM user_list WHERE id = '${id}'`
-                    connection.query(sql, [], (err, result) => {
+                    var sql = 'SELECT count(*) as count FROM user_list WHERE id = ?'
+                    connection.query(sql, [id], (err, result) => {
                         if (err) {
                             callback({
                                 err: 'QUERY',
@@ -43,8 +41,8 @@ export const signUp = function(req, res) {
                     })
                 },
                 (resultData, callback) => {
-                    var sql = `INSERT INTO user_list (id, name, password, email, interest, intro) values('${id}', '${name}', '${password}', '${email}', '${interest}', '${name}')`
-                    connection.query(sql, [], (err, result) => {
+                    var sql = 'INSERT INTO user_list (id, name, password, email, interest, intro) values(?, ?, ?)'
+                    connection.query(sql, [id, name, password], (err, result) => {
                         if (err) {
                             callback({
                                 err: 'QUERY',
@@ -91,8 +89,8 @@ export const signIn = function(req, res) {
     } else {
         async.waterfall([
                 (callback) => {
-                    var sql = `SELECT count(*) as count FROM user_list WHERE id = '${id}' AND password = '${password}'`
-                    connection.query(sql, [], (err, result) => {
+                    var sql = 'SELECT count(*) as count FROM user_list WHERE id = ? AND password = ?'
+                    connection.query(sql, [id, password], (err, result) => {
                         if (err) {
                             callback({
                                 err: 'QUERY',
@@ -146,23 +144,23 @@ export const compile = function(req, res) {
     } else {
         async.waterfall([
                 (callback) => {
+                    var sql = 'SELECT count(*) as count FROM flag WHERE answer = ? and is_use = 1'
                     if(language == 'c'){
                         let file = 'code/code.c'
                         fs.writeFile(file, content, 'utf8', function(err){
-                            console.log('Make .c finish')
                         })
                         var compile = spawn('gcc', [file])
-                        compile.stdout.on('data', function(data){
-                            console.log('stdout : ' + data)
-                        })
-                        compile.stderr.on('data', function(data){
-                            console.log(String(data))
-                        })
                         compile.on('close', function(data){
                             if(data == 0){
                                 var run = spawn('./a.out', [])
                                 run.stdout.on('data', function(output){
-                                    callback(null, {output: output.toString('utf8')})
+                                    connection.query(sql, [output.toString('utf8')], (err, result) => {
+                                        if(result[0].count == 0){
+                                            callback(null, {status: 'Incorrect', output: output.toString('utf8')})
+                                        }else{
+                                            callback(null, {status: 'Correct', output: output.toString('utf8')})
+                                        }
+                                    })
                                 })
                             }else{
                                 callback({err: '.c code'})
@@ -171,20 +169,19 @@ export const compile = function(req, res) {
                     }else if(language == 'cpp'){
                         let file = 'code/code.cpp'
                         fs.writeFile(file, content, 'utf8', function(err){
-                            console.log('Make .cpp finish')
                         })
                         var compile = spawn('g++', [file])
-                        compile.stdout.on('data', function(data){
-                            console.log('stdout : ' + data)
-                        })
-                        compile.stderr.on('data', function(data){
-                            console.log(String(data))
-                        })
                         compile.on('close', function(data){
                             if(data == 0){
                                 var run = spawn('./a.out', [])
                                 run.stdout.on('data', function(output){
-                                    callback(null, {output: output.toString('utf8')})
+                                    connection.query(sql, [output.toString('utf8')], (err, result) => {
+                                        if(result[0].count == 0){
+                                            callback(null, {status: 'Incorrect', output: output.toString('utf8')})
+                                        }else{
+                                            callback(null, {status: 'Correct', output: output.toString('utf8')})
+                                        }
+                                    })
                                 })
                             }else{
                                 callback({err: '.cpp code'})
@@ -193,11 +190,16 @@ export const compile = function(req, res) {
                     }else if(language == 'python2'){
                         let file = 'code/code.py'
                         fs.writeFile(file, content, 'utf8', function(err){
-                            console.log('Make .py finish')
                         })
                         var compile = spawn('python', [file])
                         compile.stdout.on('data', function(data){
-                            callback(null, {output: data.toString('utf8')})
+                            connection.query(sql, [data.toString('utf8').replace(/\n+$/,'')], (err, result) => {
+                                if(result[0].count == 0){
+                                    callback(null, {status: 'Incorrect', output: data.toString('utf8').replace(/\n+$/,'')})
+                                }else{
+                                    callback(null, {status: 'Correct', output: data.toString('utf8').replace(/\n+$/,'')})
+                                }
+                            })
                         })
                         compile.stderr.on('data', function(data){
                             callback({err: String(data)})
@@ -205,11 +207,16 @@ export const compile = function(req, res) {
                     }else if(language == 'python3'){
                         let file = 'code/code.py'
                         fs.writeFile(file, content, 'utf8', function(err){
-                            console.log('Make .py3 finish')
                         })
                         var compile = spawn('python3', [file])
                         compile.stdout.on('data', function(data){
-                            callback(null, {output: data.toString('utf8')})
+                            connection.query(sql, [data.toString('utf8').replace(/\n+$/,'')], (err, result) => {
+                                if(result[0].count == 0){
+                                    callback(null, {status: 'Incorrect', output: data.toString('utf8').replace(/\n+$/,'')})
+                                }else{
+                                    callback(null, {status: 'Correct', output: data.toString('utf8').replace(/\n+$/,'')})
+                                }
+                            })
                         })
                         compile.stderr.on('data', function(data){
                             callback({err: String(data)})

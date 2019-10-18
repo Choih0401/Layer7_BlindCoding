@@ -11,9 +11,9 @@ router.get('/', (req, res) => {
     })
 })
 
-router.post('/auth/signup', API.signUp) // 회원가입
+router.post('/auth/signup', API.signUp)
 
-router.post('/auth/signin', API.signIn) // 로그인
+router.post('/auth/signin', API.signIn)
 
 router.post('/challenge/compile', API.compile)
 
