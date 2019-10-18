@@ -17,6 +17,6 @@ router.post('/auth/signin', API.signIn)
 
 router.post('/challenge/compile', API.compile)
 
-router.post('/challenge/leaderboard', API.leaderboard)
+router.get('/challenge/leaderboard', API.leaderboard)
 
 export default router
