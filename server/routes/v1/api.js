@@ -250,3 +250,46 @@ export const compile = function(req, res) {
             })
     }
 }
+
+export const leaderboard = function(req, res) {
+    async.waterfall([
+        (callback) => {
+            var sql = 'SELECT * FROM user_list WHERE is_use = 1 ORDER BY score, endtime'
+            connection.query(sql, [], (err, result) => {
+                if (err) {
+                    callback({err: 'QUERY', message: 'QUERY ERROR'})
+                }else{
+                    let arr = []
+                    if(result.length != 0){
+                        result.forEach((v, i) => {
+                            arr.push({
+                                name: v.name,
+                                score: v.score
+                            })
+                        })
+                        callback(null, arr)
+                    }else{
+                        callback(null, arr)
+                    }
+                }
+            })
+        }
+    ],
+    (err, result) => {
+        if (err) {
+            res.json({
+                code: 500,
+                v: 'v1',
+                status: 'ERR_LEADERBOARD',
+                detail: err
+            })
+        } else {
+            res.json({
+                code: 200,
+                v: 'v1',
+                status: 'SUCCESS',
+                detail: result
+            })
+        }
+    })
+}
