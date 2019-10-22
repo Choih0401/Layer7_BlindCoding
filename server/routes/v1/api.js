@@ -359,11 +359,6 @@ export const timeCompare = function(req, res) {
                     old = result[0].starttime
                     now = result[0].endtime
                     gap = now.getTime() - old.getTime()
-                    console.log(result[0].starttime)
-                    console.log(result[0].endtime)
-                    console.log(now.getTime())
-                    console.log(old.getTime())
-                    console.log(gap)
                     sec_gap = gap / 1000
                     callback(null, '')
                 }
