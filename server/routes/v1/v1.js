@@ -19,4 +19,8 @@ router.post('/challenge/compile', API.compile)
 
 router.get('/challenge/leaderboard', API.leaderboard)
 
+router.post('/challenge/updatescore', API.updateScore)
+
+router.post('/challenge/compare', API.timeCompare)
+
 export default router
