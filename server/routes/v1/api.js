@@ -10,7 +10,9 @@ export const signUp = function(req, res) {
     var {
         id,
         name,
-        password
+        password,
+        email,
+        phonenumber
     } = req.body
     if (!id || !name || !password) {
         res.json({
@@ -23,7 +25,7 @@ export const signUp = function(req, res) {
         async.waterfall([
                 (callback) => {
                     password = crypto.createHash('sha512').update(crypto.createHash('sha512').update(password).digest('base64')).digest('base64');
-                    var sql = 'SELECT count(*) as count FROM user_list WHERE id = ?'
+                    var sql = 'SELECT count(*) as count FROM user_list WHERE id = ? AND is_use = 1'
                     connection.query(sql, [id], (err, result) => {
                         if (err) {
                             callback({
@@ -43,8 +45,8 @@ export const signUp = function(req, res) {
                     })
                 },
                 (resultData, callback) => {
-                    var sql = 'INSERT INTO user_list (id, name, password) values(?, ?, ?)'
-                    connection.query(sql, [id, name, password], (err, result) => {
+                    var sql = 'INSERT INTO user_list (id, name, password, email, phonenumber) values(?, ?, ?, ?, ?)'
+                    connection.query(sql, [id, name, password, email, phonenumber], (err, result) => {
                         if (err) {
                             callback({
                                 err: 'QUERY',
@@ -92,7 +94,7 @@ export const signIn = function(req, res) {
         async.waterfall([
                 (callback) => {
                     password = crypto.createHash('sha512').update(crypto.createHash('sha512').update(password).digest('base64')).digest('base64');
-                    var sql = 'SELECT count(*) as count FROM user_list WHERE id = ? AND password = ?'
+                    var sql = 'SELECT count(*) as count FROM user_list WHERE id = ? AND password = ? AND is_use = 1'
                     connection.query(sql, [id, password], (err, result) => {
                         if (err) {
                             callback({
