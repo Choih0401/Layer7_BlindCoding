@@ -244,7 +244,8 @@ export const leaderboard = function(req, res) {
                         result.forEach((v, i) => {
                             arr.push({
                                 name: v.name,
-                                score: v.score
+                                score: v.score,
+                                question: v.question
                             })
                         })
                         callback(null, arr)
