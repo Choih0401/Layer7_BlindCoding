@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { URL } from "config";
 
+
 class Register extends Component {
     state = {
         name: '',
@@ -33,6 +34,8 @@ class Register extends Component {
         .then(response => response.json())
         .then(json => {
             alert(json.detail);
+            if(json.code === 200) 
+                this.props.history.push('/login');
         })
     }
     render() {
