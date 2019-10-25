@@ -1,6 +1,8 @@
-import 'pages/Login.css';
-
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {login, loginFailure, loginSuccess} from 'modules/account';
+import { URL } from "config";
+
 
 class Login extends Component {
     state = {
@@ -14,23 +16,61 @@ class Login extends Component {
             [name]: value
         });
     }
-    handleLogin = event => {
+    handleSubmit = event => {
         event.preventDefault();
-        // login code
+        fetch(URL + "auth/signin/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body:
+                "id=" + this.state.id +
+                "&password=" + this.state.password
+        })
+        .then(response => response.json())
+        .then(json => {
+            if(json.code === 500)
+                alert(json.detail.message);
+            else {
+                this.props.loginSuccess({id: this.state.id});
+                this.props.history.push('/list/');
+                alert(json.detail);
+            }
+        });
     }
     render() {
         return (
-            <div>
-                <form class="loginForm" onSubmit={this.handleSubmit}>
-                    <input name="id" type="username" placeholder="ID" onChange={this.handleChange} />
-                    <br/>
-                    <input name="password" type="password" placeholder="Password" onChange={this.handleChange} />
-                    <br/>
-                    <button type="submit">Login</button>
+            <div style={{"text-align": 'center'}}>
+                <h1 style={{"margin-top":"50px"}}>Login</h1>
+                <form style={{"margin-top":"50px", "display": "flex", "flex-direction": "column", "align-items": "center"}} class="loginForm" onSubmit={this.handleSubmit}>
+                    <input style={{width: "50%"}} className="form-control" onChange={this.handleChange} id="id" name="id" type="text" placeholder="ID *" required="required" data-validation-required-message="Please enter your ID." />
+                    <input style={{width: "50%"}}  className="form-control" onChange={this.handleChange} id="pw" name="password" type="password" placeholder="PASSWORD *" required="required" data-validation-required-message="Please enter your PASSWORD."   />
+                    <button style={{"margin-top":"50px"}} id="sendMessageButton" className="btn btn-primary btn-xl text-uppercase" type="submit">Login</button>
                 </form>
             </div>
         )
     }
 }
 
-export default Login;
+const mapStateToProps = state => {
+    return { store: state };
+  };
+  
+  const mapDispatchToProps = dispatch => {
+    return {
+      login: () => {
+        return dispatch(login());
+      },
+      loginSuccess: data => {
+        return dispatch(loginSuccess(data));
+      },
+      loginFailure: () => {
+        return dispatch(loginFailure());
+      }
+    };
+  };
+  
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Login);
