@@ -1,0 +1,1 @@
+export const URL = "http://funnyga.me:14104/v1/";
