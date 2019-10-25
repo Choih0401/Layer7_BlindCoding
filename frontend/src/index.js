@@ -1,12 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import Root from './client/Root';
 import * as serviceWorker from './serviceWorker';
+import store from "./store";
+import 'bootstrap/dist/css/bootstrap.css'
 
-ReactDOM.render(<Root />, document.getElementById('root'));
+var module = store();
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+ReactDOM.render(
+    <Root store={module.store} persistor={module.persistor} />,
+    document.getElementById("root")
+);
+
 serviceWorker.unregister();
