@@ -33,7 +33,7 @@ class Login extends Component {
                 alert(json.detail.message);
             else {
                 this.props.loginSuccess({id: this.state.id});
-                this.props.history.push('/list/');
+                this.props.history.push('/problem/');
                 alert(json.detail);
             }
         });

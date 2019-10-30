@@ -44,9 +44,10 @@ class Home extends Component {
         })
         .then(response => response.json())
         .then(json => {
+            if(json.code === 500){
             alert(json.detail);
             if(json.code === 200) 
-                this.props.history.push('/login');
+            this.props.history.push('/login');
         })
     }
     render() {
