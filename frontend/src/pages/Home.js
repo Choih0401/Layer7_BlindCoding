@@ -19,7 +19,7 @@ class Home extends Component {
     constructor(props) {
         super(props);
         if (props.store.login.status === 'SUCCESS')
-            props.history.push('/list/');
+            props.history.push('/problem/');
     }
     handleChange = event => {
         const {name, value} = event.target;
@@ -45,8 +45,10 @@ class Home extends Component {
         .then(response => response.json())
         .then(json => {
             if(json.code === 500){
+                alert(json.detail.message);
+                return;
+            }
             alert(json.detail);
-            if(json.code === 200) 
             this.props.history.push('/login');
         })
     }
@@ -57,13 +59,13 @@ class Home extends Component {
                     <div className="container" style={{height: "100vh"}}>
                         <div className="intro-text">
                             <div className="intro-heading text-uppercase">Layer7 Blind Coding</div>
-                            <a className="btn btn-primary btn-xl text-uppercase js-scroll-trigger" style={{width:"150px"}}href="#services">More info</a>
+                            <a className="btn btn-primary btn-xl text-uppercase js-scroll-trigger" style={{width:"150px"}} href="#services">More info</a>
                             <br/>
                             <br/>
-                            <a className="btn btn-primary btn-xl text-uppercase js-scroll-trigger" style={{width:"150px"}}href="#contactForm"> Register </a>
+                            <a className="btn btn-primary btn-xl text-uppercase js-scroll-trigger" style={{width:"150px"}} href="#contactForm"> Register </a>
                             <br/>
                             <br/>
-                            <a className="btn btn-primary btn-xl text-uppercase js-scroll-trigger" style={{width:"150px"}}onClick={() => {this.props.history.push('/login')}}>  Login  </a>
+                            <a className="btn btn-primary btn-xl text-uppercase js-scroll-trigger" style={{width:"150px"}} onClick={() => {this.props.history.push('/login')}}>  Login  </a>
                         </div>
                     </div>
                 </header>
