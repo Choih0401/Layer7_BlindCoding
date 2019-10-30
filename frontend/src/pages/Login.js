@@ -40,12 +40,12 @@ class Login extends Component {
     }
     render() {
         return (
-            <div style={{"text-align": 'center'}}>
-                <h1 style={{"margin-top":"50px"}}>Login</h1>
-                <form style={{"margin-top":"50px", "display": "flex", "flex-direction": "column", "align-items": "center"}} class="loginForm" onSubmit={this.handleSubmit}>
+            <div style={{"textAlign": 'center'}}>
+                <h1 style={{"marginTop":"50px"}}>Login</h1>
+                <form style={{"marginTop":"50px", "display": "flex", "flexDirection": "column", "alignItems": "center"}} className="loginForm" onSubmit={this.handleSubmit}>
                     <input style={{width: "50%"}} className="form-control" onChange={this.handleChange} id="id" name="id" type="text" placeholder="ID *" required="required" data-validation-required-message="Please enter your ID." />
                     <input style={{width: "50%"}}  className="form-control" onChange={this.handleChange} id="pw" name="password" type="password" placeholder="PASSWORD *" required="required" data-validation-required-message="Please enter your PASSWORD."   />
-                    <button style={{"margin-top":"50px"}} id="sendMessageButton" className="btn btn-primary btn-xl text-uppercase" type="submit">Login</button>
+                    <button style={{"marginTop":"50px"}} id="sendMessageButton" className="btn btn-primary btn-xl text-uppercase" type="submit">Login</button>
                 </form>
             </div>
         )
