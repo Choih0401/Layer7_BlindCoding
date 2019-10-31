@@ -132,8 +132,18 @@ class Problem extends Component {
 
   onFailed = event => {
     event.preventDefault();
-    this.props.logout();
-    this.props.history.push("/");
+    fetch(URL + "/challenge/compare", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "id=" + this.props.store.status.id
+      })
+        .then(response => response.json())
+        .then(json => {
+            this.props.logout();
+            this.props.history.push("/");
+        });
   };
 
   render() {
