@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { logout } from "modules/account";
 import { URL } from "config";
 
-import '../css/Problem.css';
+import "../css/Problem.css";
 
 class Problem extends Component {
   state = {
@@ -93,7 +93,7 @@ class Problem extends Component {
           this.setState({
             ...this.state,
             isCompiled: true,
-            results: json.detail.output
+            results: json.detail.output.replace("\n", "<br/>")
           });
         });
     }
@@ -118,7 +118,7 @@ class Problem extends Component {
           });
           return;
         }
-        if(this.state.solvedCnt+1 === this.problems.length) {
+        if (this.state.solvedCnt + 1 === this.problems.length) {
           this.setState({
             ...this.state,
             isDone: true
@@ -133,9 +133,11 @@ class Problem extends Component {
           })
             .then(response => response.json())
             .then(json => {
-                alert("You'll be logged out since you completed whole the challenge.");
-                this.props.logout();
-                this.props.history.push("/");
+              alert(
+                "You'll be logged out since you completed whole the challenge."
+              );
+              this.props.logout();
+              this.props.history.push("/");
             });
           return;
         }
@@ -163,8 +165,8 @@ class Problem extends Component {
     })
       .then(response => response.json())
       .then(json => {
-          this.props.logout();
-          this.props.history.push("/");
+        this.props.logout();
+        this.props.history.push("/");
       });
   };
 
