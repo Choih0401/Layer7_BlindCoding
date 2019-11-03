@@ -13,7 +13,8 @@ class Problem extends Component {
     isCompiled: false,
     results: "",
     isStarted: false,
-    isPopup: false
+    isPopup: false,
+    isDone: false
   };
 
   problems = [
@@ -117,6 +118,27 @@ class Problem extends Component {
           });
           return;
         }
+        if(this.state.solvedCnt+1 === this.problems.length) {
+          this.setState({
+            ...this.state,
+            isDone: true
+          });
+
+          fetch(URL + "/challenge/compare", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "id=" + this.props.store.status.id
+          })
+            .then(response => response.json())
+            .then(json => {
+                alert("You'll be logged out since you completed whole the challenge.");
+                this.props.logout();
+                this.props.history.push("/");
+            });
+          return;
+        }
         this.setState({
           ...this.state,
           solvedCnt: this.state.solvedCnt + 1,
@@ -133,22 +155,27 @@ class Problem extends Component {
   onFailed = event => {
     event.preventDefault();
     fetch(URL + "/challenge/compare", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: "id=" + this.props.store.status.id
-      })
-        .then(response => response.json())
-        .then(json => {
-            this.props.logout();
-            this.props.history.push("/");
-        });
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: "id=" + this.props.store.status.id
+    })
+      .then(response => response.json())
+      .then(json => {
+          this.props.logout();
+          this.props.history.push("/");
+      });
   };
 
   render() {
     return (
       <div style={{ textAlign: "center" }}>
+        {this.state.isDone ? (
+          <div style={{ backgroundColor: "black", color: "#fff" }}>
+            <h1>You completed all the questions!</h1>
+          </div>
+        ) : null}
         {this.state.isPopup ? (
           <div style={{ backgroundColor: "black", color: "#fff" }}>
             <h1>Results</h1>
@@ -168,9 +195,7 @@ class Problem extends Component {
               Continue
             </button>
           </div>
-        ) : (
-          <p></p>
-        )}
+        ) : null}
 
         <h2 style={{ marginTop: "100px" }}>
           {this.state.solvedCnt + 1} -{" "}
