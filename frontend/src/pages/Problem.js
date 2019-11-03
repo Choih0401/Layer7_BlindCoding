@@ -95,7 +95,7 @@ class Problem extends Component {
           this.setState({
             ...this.state,
             isCompiled: true,
-            results: json.detail.output
+            results: json.detail.output.replace(/\n/gi, '<br>')
           });
         });
     }
@@ -183,7 +183,7 @@ class Problem extends Component {
         {this.state.isPopup ? (
           <div style={{ backgroundColor: "black", color: "#fff" }}>
             <h1>Results</h1>
-            <h2>{this.state.results}</h2>
+            <div dangerouslySetInnerHTML={ {__html: this.state.results} }></div>
             <button
               onClick={this.onFailed}
               style={{ margin: "5px" }}
