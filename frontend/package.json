@@ -4,7 +4,11 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.3.1",
+<<<<<<< HEAD
     "react": "^16.11.0",
+=======
+    "react": "^16.10.2",
+>>>>>>> f79b64e8abb250cc9dab701e802ac173387e6ae5
     "react-addons-update": "^15.6.2",
     "react-bootstrap": "^1.0.0-beta.14",
     "react-dom": "^16.10.2",
