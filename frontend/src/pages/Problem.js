@@ -72,6 +72,7 @@ class Problem extends Component {
         isPopup: true
       });
     } else {
+      console.log(this.state.content)
       fetch(URL + "/challenge/compile", {
         method: "POST",
         headers: {
@@ -82,6 +83,7 @@ class Problem extends Component {
       })
         .then(response => response.json())
         .then(json => {
+          console.log(json)
           if (json.code === 500) {
             this.setState({
               ...this.state,
