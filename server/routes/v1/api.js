@@ -149,6 +149,7 @@ export const compile = function(req, res) {
     } else {
         async.waterfall([
                 (callback) => {
+                    console.log(content)
                     if(language == 'c'){
                         let file = 'code/code.c'
                         fs.writeFile(file, content, 'utf8', function(err){
