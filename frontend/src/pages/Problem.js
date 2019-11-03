@@ -79,7 +79,7 @@ class Problem extends Component {
           "Content-Type": "application/x-www-form-urlencoded"
         },
         body:
-          "language=" + this.state.language + "&content=" + this.state.content
+          "language=" + this.state.language + "&content=" + this.state.content.replace(/\+/gi,"%2b")
       })
         .then(response => response.json())
         .then(json => {
@@ -95,7 +95,7 @@ class Problem extends Component {
           this.setState({
             ...this.state,
             isCompiled: true,
-            results: json.detail.output.replace("\n", "<br/>")
+            results: json.detail.output
           });
         });
     }
