@@ -368,7 +368,7 @@ export const timeCompare = function(req, res) {
             })
         },
         (resultData, callback) => {
-            var sql = 'UPDATE user_list SET score = ? and is_use = 0 WHERE id = ?'
+            var sql = 'UPDATE user_list SET score = ?, is_use = 0 WHERE id = ?'
             connection.query(sql, [sec_gap, id], (err, result) => {
                 if(err){
                     callback({
