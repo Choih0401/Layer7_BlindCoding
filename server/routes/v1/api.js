@@ -158,7 +158,7 @@ export const compile = function(req, res) {
                             if(data == 0){
                                 var run = spawn('./a.out', [])
                                 run.stdout.on('data', function(output){
-                                    callback(null, {output: output.toString('utf8').replace(/\n/gi,"\\r\\n")})
+                                    callback(null, {output: output.toString('utf8').replace(/\n/gi,"\\n")})
                                 })
                             }else{
                                 callback({err: '.c code'})
@@ -173,7 +173,7 @@ export const compile = function(req, res) {
                             if(data == 0){
                                 var run = spawn('./a.out', [])
                                 run.stdout.on('data', function(output){
-                                    callback(null, {output: output.toString('utf8').replace(/\n/gi,"\\r\\n")})
+                                    callback(null, {output: output.toString('utf8').replace(/\n/gi,"\\n")})
                                 })
                             }else{
                                 callback({err: '.cpp code'})
@@ -185,7 +185,7 @@ export const compile = function(req, res) {
                         })
                         var compile = spawn('python', [file])
                         compile.stdout.on('data', function(data){
-                            callback(null, {output: data.toString('utf8').replace(/\n+$/,'').replace(/\n/gi,"\\r\\n")})
+                            callback(null, {output: data.toString('utf8').replace(/\n+$/,'').replace(/\n/gi,"\\n")})
                         })
                         compile.stderr.on('data', function(data){
                             callback({err: String(data)})
@@ -196,7 +196,7 @@ export const compile = function(req, res) {
                         })
                         var compile = spawn('python3', [file])
                         compile.stdout.on('data', function(data){
-                            callback(null, {output: data.toString('utf8').replace(/\n+$/,'').replace(/\n/gi,"\\r\\n")})
+                            callback(null, {output: data.toString('utf8').replace(/\n+$/,'').replace(/\n/gi,"\\n")})
                         })
                         compile.stderr.on('data', function(data){
                             callback({err: String(data)})
