@@ -250,7 +250,7 @@ class Problem extends Component {
           <div style={{ fontSize: "30px" }}>{this.state.language}</div>
 
           <br />
-          <textarea
+          <textarea spellcheck = "false"
             unselectable="on"
             value={this.state.content}
             name="content"
