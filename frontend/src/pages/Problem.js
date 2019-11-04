@@ -72,18 +72,21 @@ class Problem extends Component {
         isPopup: true
       });
     } else {
-      console.log(this.state.content)
+      console.log(this.state.content);
       fetch(URL + "/challenge/compile", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         },
         body:
-          "language=" + this.state.language + "&content=" + this.state.content.replace(/\+/gi,"%2b")
+          "language=" +
+          this.state.language +
+          "&content=" +
+          this.state.content.replace(/\+/gi, "%2b")
       })
         .then(response => response.json())
         .then(json => {
-          console.log(json)
+          console.log(json);
           if (json.code === 500) {
             this.setState({
               ...this.state,
@@ -95,7 +98,7 @@ class Problem extends Component {
           this.setState({
             ...this.state,
             isCompiled: true,
-            results: json.detail.output.replace(/\n/gi, '<br>')
+            results: json.detail.output.replace(/\n/gi, "<br>")
           });
         });
     }
@@ -126,7 +129,7 @@ class Problem extends Component {
             isDone: true
           });
 
-          fetch(URL + "/challenge/compare", {
+          fetch(URL + "challenge/compare", {
             method: "POST",
             headers: {
               "Content-Type": "application/x-www-form-urlencoded"
@@ -158,7 +161,7 @@ class Problem extends Component {
 
   onFailed = event => {
     event.preventDefault();
-    fetch(URL + "/challenge/compare", {
+    fetch(URL + "challenge/compare", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
@@ -183,7 +186,7 @@ class Problem extends Component {
         {this.state.isPopup ? (
           <div style={{ backgroundColor: "black", color: "#fff" }}>
             <h1>Results</h1>
-            <div dangerouslySetInnerHTML={ {__html: this.state.results} }></div>
+            <div dangerouslySetInnerHTML={{ __html: this.state.results }}></div>
             <button
               onClick={this.onFailed}
               style={{ margin: "5px" }}
@@ -250,7 +253,8 @@ class Problem extends Component {
           <div style={{ fontSize: "30px" }}>{this.state.language}</div>
 
           <br />
-          <textarea spellcheck = "false"
+          <textarea
+            spellcheck="false"
             unselectable="on"
             value={this.state.content}
             name="content"
