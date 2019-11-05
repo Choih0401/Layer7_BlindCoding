@@ -7,7 +7,7 @@ import async from 'async'
 require('dotenv').config()
 
 export const signUp = function(req, res) {
-    var count = 0
+    var check = 0
     var {
         id,
         name,
@@ -34,7 +34,7 @@ export const signUp = function(req, res) {
                                 message: 'QUERY ERROR'
                             })
                         } else {
-                            count = result[0].count
+                            check = result[0].count
                             if (result[0].count > 0) {
                                 callback({
                                     err: 'ERR_SIGNUP',
@@ -48,7 +48,12 @@ export const signUp = function(req, res) {
                 },
                 (resultData, callback) => {
                     var sql = 'INSERT INTO user_list (id, name, password, email, phonenumber) values(?, ?, ?, ?, ?)'
-                    if(count != 0){
+                    if(check > 0){
+                        callback({
+                            err: 'ERR_SIGNUP',
+                            message: 'USERID ALREADY EXISTS'
+                        })
+                    }else{
                         connection.query(sql, [id, name, password, email, phonenumber], (err, result) => {
                             if (err) {
                                 callback({
@@ -58,11 +63,6 @@ export const signUp = function(req, res) {
                             } else {
                                 callback(null, '')
                             }
-                        })
-                    }else{
-                        callback({
-                            err: 'ERR_SIGNUP',
-                            message: 'USERID ALREADY EXISTS'
                         })
                     }
                 }
