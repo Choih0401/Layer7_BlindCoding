@@ -46,16 +46,23 @@ export const signUp = function(req, res) {
                 },
                 (resultData, callback) => {
                     var sql = 'INSERT INTO user_list (id, name, password, email, phonenumber) values(?, ?, ?, ?, ?)'
-                    connection.query(sql, [id, name, password, email, phonenumber], (err, result) => {
-                        if (err) {
-                            callback({
-                                err: 'QUERY',
-                                message: resultData
-                            })
-                        } else {
-                            callback(null, '')
-                        }
-                    })
+                    if(!resultData.count > 0){
+                        connection.query(sql, [id, name, password, email, phonenumber], (err, result) => {
+                            if (err) {
+                                callback({
+                                    err: 'QUERY',
+                                    message: 'QUERY ERROR02'
+                                })
+                            } else {
+                                callback(null, '')
+                            }
+                        })
+                    }else{
+                        callback({
+                            err: 'ERR_SIGNUP',
+                            message: 'USERID ALREADY EXISTS'
+                        })
+                    }
                 }
             ],
             (err, result) => {
