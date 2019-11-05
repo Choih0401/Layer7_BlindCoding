@@ -25,7 +25,7 @@ export const signUp = function (req, res) {
         async.waterfall([
                 (callback) => {
                     password = crypto.createHash('sha512').update(crypto.createHash('sha512').update(password).digest('base64')).digest('base64');
-                    var sql = 'SELECT count(*) as count FROM user_list WHERE id = ? AND is_use = 1'
+                    var sql = 'SELECT * FROM user_list WHERE id = ? AND is_use = 1'
                     connection.query(sql, [id], (err, result) => {
                         if (err) {
                             callback({
@@ -33,7 +33,7 @@ export const signUp = function (req, res) {
                                 message: 'QUERY ERROR'
                             })
                         } else {
-                            if (result[0].count > 0) {
+                            if (result.length > 0) {
                                 callback({
                                     err: 'ERR_SIGNUP',
                                     message: 'USERID ALREADY EXISTS'
@@ -53,8 +53,7 @@ export const signUp = function (req, res) {
                             }
                         }
                     })
-                },
-                (resultData, callback) => {}
+                }
             ],
             (err, result) => {
                 if (err) {
