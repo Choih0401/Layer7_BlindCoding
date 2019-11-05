@@ -46,7 +46,7 @@ export const signUp = function(req, res) {
                 },
                 (resultData, callback) => {
                     var sql = 'INSERT INTO user_list (id, name, password, email, phonenumber) values(?, ?, ?, ?, ?)'
-                    if(!resultData.count > 0){
+                    if(!resultData[0].count > 0){
                         connection.query(sql, [id, name, password, email, phonenumber], (err, result) => {
                             if (err) {
                                 callback({
