@@ -50,7 +50,7 @@ export const signUp = function(req, res) {
                         if (err) {
                             callback({
                                 err: 'QUERY',
-                                message: 'QUERY ERROR'
+                                message: resultData
                             })
                         } else {
                             callback(null, '')
