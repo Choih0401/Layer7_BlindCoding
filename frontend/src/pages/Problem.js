@@ -149,7 +149,7 @@ class Problem extends Component {
         isPopup: true
       });
     } else {
-      fetch(URL + "/challenge/compile", {
+      fetch(URL + "challenge/compile", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
@@ -172,7 +172,9 @@ class Problem extends Component {
             this.setState({
               ...this.state,
               isCompiled: true,
-              results: json.detail.output.replace(/\n/gi, "<br>")
+              results: json.detail.output
+                .replace(/\n/gi, "<br>")
+                .replace(" ", "&nbsp;")
             });
           }
         });
@@ -181,7 +183,7 @@ class Problem extends Component {
 
   onContinue = event => {
     event.preventDefault();
-    fetch(URL + "/challenge/updatescore", {
+    fetch(URL + "challenge/updatescore", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
@@ -194,7 +196,7 @@ class Problem extends Component {
           this.setState({
             ...this.state,
             isCompiled: true,
-            results: "COMPILE ERROR"
+            results: "CALL THE STAFF"
           });
           return;
         }
@@ -243,23 +245,37 @@ class Problem extends Component {
           </div>
         ) : null}
         {this.state.isPopup ? (
-          <div style={{ backgroundColor: "black", color: "#fff" }}>
-            <h1>Results</h1>
-            <div dangerouslySetInnerHTML={{ __html: this.state.results }}></div>
-            <button
-              onClick={this.onFailed}
-              style={{ margin: "5px" }}
-              className="btn btn-primary btn-xl text-uppercase"
+          <div
+            style={{
+              backgroundColor: "black",
+              color: "#fff",
+              textAlign: "left"
+            }}
+          >
+            <div
+              style={{
+                marginLeft: "30vw"
+              }}
             >
-              Failed
-            </button>
-            <button
-              onClick={this.onContinue}
-              style={{ margin: "5px" }}
-              className="btn btn-primary btn-xl text-uppercase"
-            >
-              Continue
-            </button>
+              <h1>Results</h1>
+              <div
+                dangerouslySetInnerHTML={{ __html: this.state.results }}
+              ></div>
+              <button
+                onClick={this.onFailed}
+                style={{ margin: "5px" }}
+                className="btn btn-primary btn-xl text-uppercase"
+              >
+                Failed
+              </button>
+              <button
+                onClick={this.onContinue}
+                style={{ margin: "5px" }}
+                className="btn btn-primary btn-xl text-uppercase"
+              >
+                Continue
+              </button>
+            </div>
           </div>
         ) : null}
 
