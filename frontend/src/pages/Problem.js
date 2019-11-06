@@ -158,7 +158,7 @@ class Problem extends Component {
           "language=" +
           this.state.language +
           "&content=" +
-          this.state.content.replace(/\+/gi, "%2b")
+          encodeURI(this.state.content.replace(/\+/gi, "%2b"))
       })
         .then(response => response.json())
         .then(json => {
