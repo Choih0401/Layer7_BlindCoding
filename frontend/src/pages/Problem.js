@@ -33,7 +33,7 @@ class Problem extends Component {
       name: "Print stairs with stars",
       difficulty: "3",
       description:
-        "Print stairs with stars<br/><br/>Output: *<br/>**<br/>***<br/>****<br/>*****"
+        "Print stairs with stars<br/><br/>Output: <br/>*<br/>**<br/>***<br/>****<br/>*****"
     },
     {
       name: "Print numbers of multiple of 3 between 1 to 100000",
@@ -51,7 +51,7 @@ class Problem extends Component {
       name: "Print a diamond with stars",
       difficulty: "6",
       description:
-        "Print a diamond with stars<br/><br/>Output:<br/>  *<br/>  ***<br/>*****<br/>  ***<br/>  *"
+        "Print a diamond with stars<br/><br/>Output:<br/>&nbsp;&nbsp;*<br/>&nbsp;***<br/>*****<br/>&nbsp;***<br/>&nbsp;&nbsp;*"
     },
     {
       name: 'Print "L4y3r7" + "1n" + "SunR1n 1nt3rnet H1gh Sch00l"',
@@ -66,7 +66,7 @@ class Problem extends Component {
     if (props.store.login.status !== "SUCCESS") props.history.push("/");
   }
 
-  componentWillMount() {
+  componentDidMount() {
     fetch(URL + "challenge/leaderboard", {
       method: "GET"
     })
@@ -100,15 +100,55 @@ class Problem extends Component {
     });
   };
 
+  onFailed = event => {
+    event.preventDefault();
+    fetch(URL + "challenge/compare", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: "id=" + this.props.store.status.id
+    })
+      .then(response => response.json())
+      .then(json => {
+        this.props.logout();
+        this.props.history.push("/");
+      });
+  };
+
+  selectText = () => {
+    this.refs.newText.getDOMNode().select();
+  };
+
+  onKeyDown = event => {
+    if (event.keyCode === 9) {
+      event.preventDefault();
+      let v = this.state.content,
+        s = event.target.selectionStart,
+        e = event.target.selectionEnd;
+      this.setState(
+        {
+          ...this.state,
+          content: v.substring(0, s) + "\t" + v.substring(e)
+        },
+        () => {
+          this.refs.input.selectionStart = this.refs.input.selectionEnd = s + 1;
+        }
+      );
+      this.selectionStart = this.selectionEnd = s + 1;
+      return false;
+    }
+  };
+
   handleCompileButton = event => {
     event.preventDefault();
     if (this.state.isCompiled) {
+      window.scrollTo(0, 0);
       this.setState({
         ...this.state,
         isPopup: true
       });
     } else {
-      console.log(this.state.content);
       fetch(URL + "/challenge/compile", {
         method: "POST",
         headers: {
@@ -122,20 +162,19 @@ class Problem extends Component {
       })
         .then(response => response.json())
         .then(json => {
-          console.log(json);
           if (json.code === 500) {
             this.setState({
               ...this.state,
               isCompiled: true,
               results: "COMPILE ERROR"
             });
-            return;
+          } else {
+            this.setState({
+              ...this.state,
+              isCompiled: true,
+              results: json.detail.output.replace(/\n/gi, "<br>")
+            });
           }
-          this.setState({
-            ...this.state,
-            isCompiled: true,
-            results: json.detail.output.replace(/\n/gi, "<br>")
-          });
         });
     }
   };
@@ -195,52 +234,12 @@ class Problem extends Component {
       });
   };
 
-  onFailed = event => {
-    event.preventDefault();
-    fetch(URL + "challenge/compare", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: "id=" + this.props.store.status.id
-    })
-      .then(response => response.json())
-      .then(json => {
-        this.props.logout();
-        this.props.history.push("/");
-      });
-  };
-
-  selectText = () => {
-    this.refs.newText.getDOMNode().select();
-  };
-
-  onKeyDown = event => {
-    if (event.keyCode === 9) {
-      event.preventDefault();
-      let v = this.state.content,
-        s = event.target.selectionStart,
-        e = event.target.selectionEnd;
-      this.setState(
-        {
-          ...this.state,
-          content: v.substring(0, s) + "\t" + v.substring(e)
-        },
-        () => {
-          this.refs.input.selectionStart = this.refs.input.selectionEnd = s + 1;
-        }
-      );
-      this.selectionStart = this.selectionEnd = s + 1;
-      return false;
-    }
-  };
-
   render() {
     return (
       <div style={{ textAlign: "center" }}>
         {this.state.isDone ? (
           <div style={{ backgroundColor: "black", color: "#fff" }}>
-            <h1>You completed all the questions!</h1>
+            <h1>You've completed all the questions!</h1>
           </div>
         ) : null}
         {this.state.isPopup ? (
@@ -268,8 +267,12 @@ class Problem extends Component {
           {this.state.solvedCnt + 1} -{" "}
           {this.problems[this.state.solvedCnt].name}
         </h2>
-        <div style={{ marginTop: "20px" }}>Difficulty</div>
         <div style={{ marginTop: "20px" }}>
+          {this.problems[this.state.solvedCnt].difficulty}
+        </div>
+        <div
+          style={{ marginTop: "20px", textAlign: "left", marginLeft: "30vw" }}
+        >
           <div
             dangerouslySetInnerHTML={{
               __html: this.problems[this.state.solvedCnt].description
