@@ -14,6 +14,18 @@ export const signUp = function(req, res) {
         email,
         phonenumber
     } = req.body
+    if(id > 50){
+        id = id.slice(0, 80)
+    }
+    if(name > 50){
+        name = name.slice(0, 80)
+    }
+    if(email > 50){
+        email = email.slice(0, 80)
+    }
+    if(phonenumber > 50){
+        phonenumber = phonenumber.slice(0, 80)
+    }
     if (!id || !name || !password) {
         res.json({
             code: 500,
