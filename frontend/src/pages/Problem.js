@@ -21,41 +21,43 @@ class Problem extends Component {
     {
       name: "Print Hello, Layer7",
       difficulty: "1",
-      description: "Print Hello, Layer7\n\nOutput: Hello, Layer7"
+      description: "Print Hello, Layer7<br/><br/>Output: Hello, Layer7"
     },
     {
       name: "Print numbers from 1 to 10",
       difficulty: "2",
-      description: "Print numbers from 1 to 10\n\nOutput: 1 2 3 4 5 6 7 8 9 10"
+      description:
+        "Print numbers from 1 to 10<br/><br/>Output: 1 2 3 4 5 6 7 8 9 10"
     },
     {
       name: "Print stairs with stars",
       difficulty: "3",
-      description: "Print stairs with stars\n\nOutput: *\n**\n***\n****\n*****"
+      description:
+        "Print stairs with stars<br/><br/>Output: *<br/>**<br/>***<br/>****<br/>*****"
     },
     {
       name: "Print numbers of multiple of 3 between 1 to 100000",
       difficulty: "4",
       description:
-        "Print numbers of multiple of 3 between 1 to 100000\n\nOutput: Hidden"
+        "Print numbers of multiple of 3 between 1 to 100000<br/><br/>Output: Hidden"
     },
     {
       name: "Print result of 12345432 / i when i increases from 0 to 5",
       difficulty: "5",
       description:
-        "Print result of 12345432 / i when i increases from 0 to 5\n\nOutput: Hidden"
+        "Print result of 12345432 / i when i increases from 0 to 5<br/><br/>Output: Hidden"
     },
     {
       name: "Print a diamond with stars",
       difficulty: "6",
       description:
-        "Print a diamond with stars\n\nOutput:\n  *\n  ***\n*****\n  ***\n  *"
+        "Print a diamond with stars<br/><br/>Output:<br/>  *<br/>  ***<br/>*****<br/>  ***<br/>  *"
     },
     {
       name: 'Print "L4y3r7" + "1n" + "SunR1n 1nt3rnet H1gh Sch00l"',
       difficulty: "7",
       description:
-        'Print "L4y3r7" + "1n" + "SunR1n 1nt3rnet H1gh Sch00l"\n\nOutput: "L4y3r7" + "1n" + "SunR1n 1nt3rnet H1gh Sch00l"'
+        'Print "L4y3r7" + "1n" + "SunR1n 1nt3rnet H1gh Sch00l"<br/><br/>Output: "L4y3r7" + "1n" + "SunR1n 1nt3rnet H1gh Sch00l"'
     }
   ];
 
@@ -268,7 +270,11 @@ class Problem extends Component {
         </h2>
         <div style={{ marginTop: "20px" }}>Difficulty</div>
         <div style={{ marginTop: "20px" }}>
-          {this.problems[this.state.solvedCnt].description}
+          <div
+            dangerouslySetInnerHTML={{
+              __html: this.problems[this.state.solvedCnt].description
+            }}
+          ></div>
         </div>
         <div style={{ textAlign: "center", width: "100%" }}>
           <div
@@ -319,7 +325,6 @@ class Problem extends Component {
             name="content"
             onChange={this.handleChange}
             style={{
-              color: "#fff",
               resize: "none",
               width: "100%",
               height: "40vh"
