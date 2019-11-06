@@ -209,6 +209,30 @@ class Problem extends Component {
       });
   };
 
+  selectText = () => {
+    this.refs.newText.getDOMNode().select();
+  };
+
+  onKeyDown = event => {
+    if (event.keyCode === 9) {
+      event.preventDefault();
+      let v = this.state.content,
+        s = event.target.selectionStart,
+        e = event.target.selectionEnd;
+      this.setState(
+        {
+          ...this.state,
+          content: v.substring(0, s) + "\t" + v.substring(e)
+        },
+        () => {
+          this.refs.input.selectionStart = this.refs.input.selectionEnd = s + 1;
+        }
+      );
+      this.selectionStart = this.selectionEnd = s + 1;
+      return false;
+    }
+  };
+
   render() {
     return (
       <div style={{ textAlign: "center" }}>
@@ -288,8 +312,9 @@ class Problem extends Component {
 
           <br />
           <textarea
-            spellcheck="false"
+            spellCheck="false"
             unselectable="on"
+            ref="input"
             value={this.state.content}
             name="content"
             onChange={this.handleChange}
@@ -301,6 +326,7 @@ class Problem extends Component {
             }}
             className="noselect form-control rounded-0"
             id="code"
+            onKeyDown={this.onKeyDown}
           ></textarea>
           <br />
 
