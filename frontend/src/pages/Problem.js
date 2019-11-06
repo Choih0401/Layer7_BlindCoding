@@ -18,11 +18,45 @@ class Problem extends Component {
   };
 
   problems = [
-    { name: "name1", difficulty: "1", description: "description" },
-    { name: "name2", difficulty: "1", description: "description" },
-    { name: "name3", difficulty: "1", description: "description" },
-    { name: "name4", difficulty: "1", description: "description" },
-    { name: "name5", difficulty: "1", description: "description" }
+    {
+      name: "Print Hello, Layer7",
+      difficulty: "1",
+      description: "Print Hello, Layer7\n\nOutput: Hello, Layer7"
+    },
+    {
+      name: "Print numbers from 1 to 10",
+      difficulty: "2",
+      description: "Print numbers from 1 to 10\n\nOutput: 1 2 3 4 5 6 7 8 9 10"
+    },
+    {
+      name: "Print stairs with stars",
+      difficulty: "3",
+      description: "Print stairs with stars\n\nOutput: *\n**\n***\n****\n*****"
+    },
+    {
+      name: "Print numbers of multiple of 3 between 1 to 100000",
+      difficulty: "4",
+      description:
+        "Print numbers of multiple of 3 between 1 to 100000\n\nOutput: Hidden"
+    },
+    {
+      name: "Print result of 12345432 / i when i increases from 0 to 5",
+      difficulty: "5",
+      description:
+        "Print result of 12345432 / i when i increases from 0 to 5\n\nOutput: Hidden"
+    },
+    {
+      name: "Print a diamond with stars",
+      difficulty: "6",
+      description:
+        "Print a diamond with stars\n\nOutput:\n  *\n  ***\n*****\n  ***\n  *"
+    },
+    {
+      name: 'Print "L4y3r7" + "1n" + "SunR1n 1nt3rnet H1gh Sch00l"',
+      difficulty: "7",
+      description:
+        'Print "L4y3r7" + "1n" + "SunR1n 1nt3rnet H1gh Sch00l"\n\nOutput: "L4y3r7" + "1n" + "SunR1n 1nt3rnet H1gh Sch00l"'
+    }
   ];
 
   constructor(props) {
