@@ -328,6 +328,7 @@ class Problem extends Component {
             name="content"
             onChange={this.handleChange}
             style={{
+              color: "white",
               resize: "none",
               width: "100%",
               height: "40vh"
