@@ -23,4 +23,8 @@ router.post('/challenge/updatescore', API.updateScore)
 
 router.post('/challenge/compare', API.timeCompare)
 
+router.post('/auth/init', API.init)
+
+router.post('/auth/penalty', API.penalty)
+
 export default router
