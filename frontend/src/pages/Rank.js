@@ -45,7 +45,7 @@ class Rank extends Component {
             color: "white"
           }}
         >
-          LEADERBOARD
+          LEADERBOARD - BC
         </h1>
         <ol
           style={{

@@ -87,6 +87,20 @@ class Home extends Component {
                 More info
               </a>
               <br />
+
+              <br />
+              <a
+                className="btn btn-primary btn-xl text-uppercase js-scroll-trigger"
+                style={{ width: "150px" }}
+                onClick={() => {
+                  this.props.history.push("/login");
+                }}
+              >
+                {" "}
+                Login{" "}
+              </a>
+              <br />
+
               <br />
               <a
                 className="btn btn-primary btn-xl text-uppercase js-scroll-trigger"

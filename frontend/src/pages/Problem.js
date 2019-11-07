@@ -67,21 +67,11 @@ class Problem extends Component {
   }
 
   componentDidMount() {
-    fetch(URL + "challenge/leaderboard", {
-      method: "GET"
-    })
-      .then(response => response.json())
-      .then(json => {
-        var i;
-        for (i in json.detail) {
-          if (json.detail[i].name === this.props.store.status.id) {
-            this.setState({
-              ...this.state,
-              solvedCnt: json.detail[i].question
-            });
-          }
-        }
-      }); // set current solvedCnt
+    if (this.props.match.params.num !== undefined)
+      this.setState({
+        ...this.state,
+        solvedCnt: this.props.match.params.num * 1
+      });
   }
 
   handleChange = event => {
@@ -228,7 +218,27 @@ class Problem extends Component {
         this.setState({
           ...this.state,
           solvedCnt: this.state.solvedCnt + 1,
-          language: "c",
+          content: "",
+          isCompiled: false,
+          results: "",
+          isStarted: false,
+          isPopup: false
+        });
+        this.props.history.push("/problem/" + this.state.solvedCnt);
+      });
+  };
+
+  onPenalty = () => {
+    if (window.confirm("100 seconds will be added to your record.\nProceed?")) {
+      fetch(URL + "/auth/penalty", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "id=" + this.props.store.status.id
+      }).then(() => {
+        this.setState({
+          ...this.state,
           content: "",
           isCompiled: false,
           results: "",
@@ -236,6 +246,30 @@ class Problem extends Component {
           isPopup: false
         });
       });
+    }
+  };
+
+  onInit = () => {
+    if (window.confirm("Remove your all records and start over.\nProceed?")) {
+      fetch(URL + "/auth/init", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "id=" + this.props.store.status.id
+      }).then(() => {
+        this.setState({
+          ...this.state,
+          solvedCnt: 0,
+          content: "",
+          isCompiled: false,
+          results: "",
+          isStarted: false,
+          isPopup: false
+        });
+      });
+      this.props.history.push("/problem/" + this.state.solvedCnt);
+    }
   };
 
   render() {
@@ -264,11 +298,25 @@ class Problem extends Component {
                 dangerouslySetInnerHTML={{ __html: this.state.results }}
               ></div>
               <button
+                onClick={this.onInit}
+                style={{ margin: "5px" }}
+                className="btn btn-primary btn-xl text-uppercase"
+              >
+                Start Over
+              </button>
+              <button
+                onClick={this.onPenalty}
+                style={{ margin: "5px" }}
+                className="btn btn-primary btn-xl text-uppercase"
+              >
+                Retry
+              </button>
+              <button
                 onClick={this.onFailed}
                 style={{ margin: "5px" }}
                 className="btn btn-primary btn-xl text-uppercase"
               >
-                Failed
+                End
               </button>
               <button
                 onClick={this.onContinue}
@@ -282,12 +330,8 @@ class Problem extends Component {
         ) : null}
 
         <h2 style={{ marginTop: "100px" }}>
-          {this.state.solvedCnt + 1} -{" "}
-          {this.problems[this.state.solvedCnt].name}
+          {this.state.solvedCnt} - {this.problems[this.state.solvedCnt].name}
         </h2>
-        <div style={{ marginTop: "20px" }}>
-          {this.problems[this.state.solvedCnt].difficulty}
-        </div>
         <div
           style={{ marginTop: "20px", textAlign: "left", marginLeft: "30vw" }}
         >
