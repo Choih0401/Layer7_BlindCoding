@@ -64,7 +64,7 @@ class Rank extends Component {
                 textAlign: "center"
               }}
             >
-              SCORE
+              TIME/SEC
             </span>
             <span
               style={{
