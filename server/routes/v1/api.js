@@ -37,8 +37,8 @@ export const signUp = function(req, res) {
         async.waterfall([
                 (callback) => {
                     password = crypto.createHash('sha512').update(crypto.createHash('sha512').update(password).digest('base64')).digest('base64');
-                    var sql = 'SELECT count(*) as count FROM user_list WHERE id = ?'
-                    connection.query(sql, [id], (err, result) => {
+                    var sql = 'SELECT count(*) as count FROM user_list WHERE id = ? OR name = ?'
+                    connection.query(sql, [id, name], (err, result) => {
                         if (err) {
                             callback({
                                 err: 'QUERY',
@@ -48,7 +48,7 @@ export const signUp = function(req, res) {
                             if (result[0].count > 0) {
                                 callback({
                                     err: 'ERR_SIGNUP',
-                                    message: 'USERID ALREADY EXISTS'
+                                    message: 'USERID OR NAME ALREADY EXISTS'
                                 })
                             } else {
                                 callback(null, '')
@@ -407,6 +407,92 @@ export const timeCompare = function(req, res) {
                 v: 'v1',
                 status: 'SUCCESS',
                 detail: 'Compare time successful'
+            })
+        }
+    })
+}
+
+export const init = function(req, res) {
+    var {
+        id
+    } = req.body
+    async.waterfall([
+        (callback) => {
+            var sql = 'UPDATE user_list SET question = 0, score = 0, starttime = CURRENT_TIMESTAMP WHERE id = ?'
+            connection.query(sql, [id], (err, result) => {
+                if (err) {
+                    callback({err: 'QUERY', message: 'QUERY ERROR'})
+                }else{
+                    callback(null, '')
+                }
+            })
+        }
+    ],
+    (err, result) => {
+        if (err) {
+            res.json({
+                code: 500,
+                v: 'v1',
+                status: 'ERR_LEADERBOARD',
+                detail: err
+            })
+        } else {
+            res.json({
+                code: 200,
+                v: 'v1',
+                status: 'SUCCESS',
+                detail: 'Init Success'
+            })
+        }
+    })
+}
+
+export const penalty = function(req, res) {
+    var {
+        id
+    } = req.body
+    async.waterfall([
+        (callback) => {
+            var sql = 'SELECT * FROM user_list WHERE id = ?'
+            connection.query(sql, [id], (err, result) => {
+                if(err){
+                    callback({
+                        err: 'QUERY',
+                        message: 'QUERY ERROR'
+                    })
+                }else{
+                    callback(null, result)
+                }
+            })
+        },
+        (resultData, callback) => {
+            var sql = 'UPDATE user_list SET score = ? WHERE id = ?'
+            connection.query(sql, [resultData[0].score + 100, id], (err, result) => {
+                if(err){
+                    callback({
+                        err: 'QUERY',
+                        message: 'QUERY ERROR'
+                    })
+                }else{
+                    callback(null, '')
+                }
+            })
+        }
+    ],
+    (err, result) => {
+        if(err){
+            res.json({
+                code: 500,
+                v: 'v1',
+                status: 'ERR_PEMALTY',
+                detail: err
+            })
+        }else{
+            res.json({
+                code: 200,
+                v: 'v1',
+                status: 'SUCCESS',
+                detail: 'penalty success'
             })
         }
     })
