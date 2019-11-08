@@ -21,7 +21,7 @@ class Problem extends Component {
     {
       name: "Print Layer7 in Power of community",
       difficulty: "1",
-      description: "<br/>Output: Power of community"
+      description: "<br/>Output: Layer7 in Power of community"
     },
     {
       name: "Print BlindCodingIssOFun",
@@ -35,7 +35,7 @@ class Problem extends Component {
         "Print expression 17+8-10x(2+3)<br/><br/>Output: 17+8-10x(2+3)"
     },
     {
-      name: "Print numbers of multiple of 7 between 1 to 100",
+      name: "Print multiple of 7 between 1 to 100",
       difficulty: "4",
       description: "<br/>Output: Hidden"
     },
