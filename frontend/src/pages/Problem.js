@@ -166,8 +166,9 @@ class Problem extends Component {
               isCompiled: true,
               results: json.detail.output
                 .replace(/\n/gi, "<br>")
-                .replace(" ", "&nbsp;")
+                .replace(/ /gi, "&nbsp;")
             });
+            console.log(json.results);
           }
         });
     }
