@@ -19,45 +19,67 @@ class Problem extends Component {
 
   problems = [
     {
-      name: "Print Hello, Layer7",
+      name: "Print Layer7 in Power of community",
       difficulty: "1",
-      description: "Print Hello, Layer7<br/><br/>Output: Hello, Layer7"
+      description: "<br/>Output: Power of community"
     },
     {
-      name: "Print numbers from 1 to 10",
+      name: "Print BlindCodingIssOFun",
       difficulty: "2",
-      description:
-        "Print numbers from 1 to 10<br/><br/>Output: 1 2 3 4 5 6 7 8 9 10"
+      description: "<br/>Output: BlindCodingIssOFun"
     },
     {
-      name: "Print stairs with stars",
+      name: "Print 17+8-10x(2+3)",
       difficulty: "3",
       description:
-        "Print stairs with stars<br/><br/>Output: <br/>*<br/>**<br/>***<br/>****<br/>*****"
+        "Print expression 17+8-10x(2+3)<br/><br/>Output: 17+8-10x(2+3)"
     },
     {
-      name: "Print numbers of multiple of 3 between 1 to 100000",
+      name: "Print numbers of multiple of 7 between 1 to 100",
       difficulty: "4",
-      description:
-        "Print numbers of multiple of 3 between 1 to 100000<br/><br/>Output: Hidden"
+      description: "<br/>Output: Hidden"
     },
     {
-      name: "Print result of 12345432 / i when i increases from 0 to 5",
+      name:
+        "Print This is a very very very very very very very long sentence in reversed index",
       difficulty: "5",
-      description:
-        "Print result of 12345432 / i when i increases from 0 to 5<br/><br/>Output: Hidden"
+      description: "<br/>Output: Hidden"
     },
     {
-      name: "Print a diamond with stars",
+      name: "Print 5x5 sized snail array",
       difficulty: "6",
-      description:
-        "Print a diamond with stars<br/><br/>Output:<br/>&nbsp;&nbsp;*<br/>&nbsp;***<br/>*****<br/>&nbsp;***<br/>&nbsp;&nbsp;*"
+      description: "<br/>Output: Hidden"
     },
     {
-      name: 'Print "L4y3r7" + "1n" + "SunR1n 1nt3rnet H1gh Sch00l"',
+      name: "Print two diamonds with stars horizontally",
       difficulty: "7",
       description:
-        'Print "L4y3r7" + "1n" + "SunR1n 1nt3rnet H1gh Sch00l"<br/><br/>Output: "L4y3r7" + "1n" + "SunR1n 1nt3rnet H1gh Sch00l"'
+        "Output: <br/>&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br/>&nbsp;***&nbsp;&nbsp;&nbsp;&nbsp;***<br/>*****&nbsp;*****<br/>&nbsp;***&nbsp;&nbsp;&nbsp;&nbsp;***<br/>&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br/>"
+    },
+    {
+      name: "Print 5x5 sized diagonal array",
+      difficulty: "8",
+      description: "Output: Hidden"
+    },
+    {
+      name: "Print Layer7 in hex",
+      difficulty: "8",
+      description: "Output: Hidden"
+    },
+    {
+      name: "Print 1011010110010010 in decimal",
+      difficulty: "9",
+      description: "Output: Hidden"
+    },
+    {
+      name: `Print " " ' ' " ' " " ' " ' ' ' " " " ' " ' ' "`,
+      difficulty: "10",
+      description: `Output: " " ' ' " ' " " ' " ' ' ' " " " ' " ' ' "`
+    },
+    {
+      name: `Print a star of David`,
+      difficulty: "10",
+      description: `Output: <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;***<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*****<br/>***************<br/>&nbsp;*************<br/>&nbsp;&nbsp;***********<br/>&nbsp;*************<br/>***************<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*****<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;***<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br/>`
     }
   ];
 
